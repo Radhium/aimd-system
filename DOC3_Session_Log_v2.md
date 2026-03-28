@@ -1,7 +1,8 @@
 # DOC 3 — Session Log
+
 **v2 · Claude's memory across sessions**
 
-*Claude fills this at the end of every session. The human saves it and uploads it at the start of every future session. This document is the only continuity between chats.*
+_Claude fills this at the end of every session. The human saves it and uploads it at the start of every future session. This document is the only continuity between chats._
 
 Keep the last 5 session entries (increased from 3 to reduce risk of losing context on a long project). Move critical decisions to the Permanent Decisions section at the bottom. Delete older entries but never delete the Permanent Decisions.
 
@@ -11,29 +12,29 @@ Keep the last 5 session entries (increased from 3 to reduce risk of losing conte
 
 Claude updates this table at the end of every session.
 
-| Field | Value |
-|---|---|
-| Project name | My LLM from scratch |
-| Current phase | SETUP — environment configured, documents upgraded |
-| Overall progress | 2% — environment ready, no learning or building yet |
-| Last session date | 28 March 2026 |
-| Last session type | SETUP (system improvement) |
-| Next session type | LEARNING — start Phase 1 |
+| Field               | Value                                                                                                                                           |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project name        | My LLM from scratch                                                                                                                             |
+| Current phase       | SETUP — environment configured, documents upgraded                                                                                              |
+| Overall progress    | 2% — environment ready, no learning or building yet                                                                                             |
+| Last session date   | 28 March 2026                                                                                                                                   |
+| Last session type   | SETUP (system improvement)                                                                                                                      |
+| Next session type   | LEARNING — start Phase 1                                                                                                                        |
 | Next immediate task | Learn Python and NumPy basics: arrays, matrix operations, what a derivative means intuitively. Claude will explain with examples and exercises. |
 
 ---
 
 ## Phase and concept progress
 
-| Phase | Status | Notes |
-|---|---|---|
-| Phase 1 — Python + math | NOT STARTED | |
-| Phase 2 — PyTorch fundamentals | NOT STARTED | |
-| Phase 3 — First neural network | NOT STARTED | |
-| Phase 4 — Transformer architecture | NOT STARTED | |
-| Phase 5 — Dataset + pipeline | NOT STARTED | |
-| Phase 6 — Train the model | NOT STARTED | |
-| Phase 7 — Serve it locally | NOT STARTED | |
+| Phase                              | Status      | Notes |
+| ---------------------------------- | ----------- | ----- |
+| Phase 1 — Python + math            | NOT STARTED |       |
+| Phase 2 — PyTorch fundamentals     | NOT STARTED |       |
+| Phase 3 — First neural network     | NOT STARTED |       |
+| Phase 4 — Transformer architecture | NOT STARTED |       |
+| Phase 5 — Dataset + pipeline       | NOT STARTED |       |
+| Phase 6 — Train the model          | NOT STARTED |       |
+| Phase 7 — Serve it locally         | NOT STARTED |       |
 
 ---
 
@@ -45,11 +46,11 @@ Most recent at the top. Keep last 5 entries only.
 
 ### Session 1 — Setup
 
-| Field | Value |
-|---|---|
-| Date | 28 March 2026 |
-| Session type | SETUP (system improvement — not a standard session type) |
-| Mode stayed clean? | Yes |
+| Field              | Value                                                    |
+| ------------------ | -------------------------------------------------------- |
+| Date               | 28 March 2026                                            |
+| Session type       | SETUP (system improvement — not a standard session type) |
+| Mode stayed clean? | Yes                                                      |
 
 **What was accomplished**
 
@@ -80,105 +81,105 @@ Learning session: Phase 1 start. Introduce NumPy arrays and matrix operations. U
 
 ### Session N-1
 
-| Field | Value |
-|---|---|
-| Date | [ Claude fills ] |
-| Session type | [ LEARNING / BUILD / EXPERIMENT / DEBUG / REVIEW ] |
-| Mode stayed clean? | [ Yes / No ] |
+| Field              | Value                                              |
+| ------------------ | -------------------------------------------------- |
+| Date               | [ Claude fills ]                                   |
+| Session type       | [ LEARNING / BUILD / EXPERIMENT / DEBUG / REVIEW ] |
+| Mode stayed clean? | [ Yes / No ]                                       |
 
 **What was accomplished**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **Concepts covered or code written**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **What is unfinished or unclear**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **Exact next task**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 ---
 
 ### Session N-2
 
-| Field | Value |
-|---|---|
-| Date | [ Claude fills ] |
-| Session type | [ LEARNING / BUILD / EXPERIMENT / DEBUG / REVIEW ] |
-| Mode stayed clean? | [ Yes / No ] |
+| Field              | Value                                              |
+| ------------------ | -------------------------------------------------- |
+| Date               | [ Claude fills ]                                   |
+| Session type       | [ LEARNING / BUILD / EXPERIMENT / DEBUG / REVIEW ] |
+| Mode stayed clean? | [ Yes / No ]                                       |
 
 **What was accomplished**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **Concepts covered or code written**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **What is unfinished or unclear**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **Exact next task**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 ---
 
 ### Session N-3
 
-| Field | Value |
-|---|---|
-| Date | [ Claude fills ] |
-| Session type | [ LEARNING / BUILD / EXPERIMENT / DEBUG / REVIEW ] |
-| Mode stayed clean? | [ Yes / No ] |
+| Field              | Value                                              |
+| ------------------ | -------------------------------------------------- |
+| Date               | [ Claude fills ]                                   |
+| Session type       | [ LEARNING / BUILD / EXPERIMENT / DEBUG / REVIEW ] |
+| Mode stayed clean? | [ Yes / No ]                                       |
 
 **What was accomplished**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **Concepts covered or code written**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **What is unfinished or unclear**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **Exact next task**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 ---
 
 ### Session N-4 — Oldest kept
 
-| Field | Value |
-|---|---|
-| Date | [ Claude fills ] |
-| Session type | [ LEARNING / BUILD / EXPERIMENT / DEBUG / REVIEW ] |
-| Mode stayed clean? | [ Yes / No ] |
+| Field              | Value                                              |
+| ------------------ | -------------------------------------------------- |
+| Date               | [ Claude fills ]                                   |
+| Session type       | [ LEARNING / BUILD / EXPERIMENT / DEBUG / REVIEW ] |
+| Mode stayed clean? | [ Yes / No ]                                       |
 
 **What was accomplished**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **Concepts covered or code written**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **What is unfinished or unclear**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 **Exact next task**
 
-*[ Claude fills ]*
+_[ Claude fills ]_
 
 ---
 
@@ -186,14 +187,14 @@ Learning session: Phase 1 start. Introduce NumPy arrays and matrix operations. U
 
 Decisions that must never be reversed. Claude moves important decisions here before archiving old session entries. Never delete this section.
 
-| Decision | Made in session | Reason — never change because... |
-|---|---|---|
-| Build on local PC only — no cloud | Session 0 (setup) | The goal is to understand every part of the system. Cloud abstracts too much. |
-| Language: Python + PyTorch | Session 0 (setup) | Industry standard. Best learning resources. GPU support built in. |
+| Decision                                     | Made in session   | Reason — never change because...                                                                                                  |
+| -------------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Build on local PC only — no cloud            | Session 0 (setup) | The goal is to understand every part of the system. Cloud abstracts too much.                                                     |
+| Language: Python + PyTorch                   | Session 0 (setup) | Industry standard. Best learning resources. GPU support built in.                                                                 |
 | Use Python 3.11 venv, not system Python 3.14 | Session 1 (setup) | PyTorch has no CUDA build for Python 3.14. Always activate venv before any work. Command: C:\projects\myLLM\venv\Scripts\activate |
-| Documents stored as .md files, not .docx | Session 1 (setup) | Markdown is plain text — easier to read, edit, version, and paste into Claude. |
-| [ Add more as project grows ] | | |
+| Documents stored as .md files, not .docx     | Session 1 (setup) | Markdown is plain text — easier to read, edit, version, and paste into Claude.                                                    |
+| [ Add more as project grows ]                |                   |                                                                                                                                   |
 
 ---
 
-*End of Document 3 — Session Log — v2*
+_End of Document 3 — Session Log — v2_
