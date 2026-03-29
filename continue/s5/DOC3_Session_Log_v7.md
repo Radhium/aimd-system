@@ -10,14 +10,14 @@ Keep the last 5 session entries. Move critical decisions to the Permanent Decisi
 
 ## Project snapshot
 
-| Field               | Value                                                                                                                                                          |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Project name        | My LLM from scratch                                                                                                                                            |
-| Current phase       | Phase 3 — First neural network (in progress)                                                                                                                   |
-| Overall progress    | 30% — two-layer nn.Module network built, trained, and understood. Ready for next Phase 3 concept.                                                              |
-| Last session date   | 29 March 2026                                                                                                                                                  |
-| Last session type   | LEARNING                                                                                                                                                       |
-| Next session type   | LEARNING — Phase 3 continued                                                                                                                                   |
+| Field               | Value                                                                                                                                                                                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project name        | My LLM from scratch                                                                                                                                                                            |
+| Current phase       | Phase 3 — First neural network (in progress)                                                                                                                                                   |
+| Overall progress    | 30% — two-layer nn.Module network built, trained, and understood. Ready for next Phase 3 concept.                                                                                              |
+| Last session date   | 29 March 2026                                                                                                                                                                                  |
+| Last session type   | LEARNING                                                                                                                                                                                       |
+| Next session type   | LEARNING — Phase 3 continued                                                                                                                                                                   |
 | Next immediate task | Multiple input features — what changes when a neuron receives many numbers instead of one. Build a network that takes more than one input. Introduce what a hidden layer is actually learning. |
 
 ---
@@ -28,7 +28,7 @@ Keep the last 5 session entries. Move critical decisions to the Permanent Decisi
 | ---------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Phase 1 — Python + math            | COMPLETE    | All core concepts understood. NumPy practised in code. Chain rule, functions, loops, classes done.                                                                                                                                         |
 | Phase 2 — PyTorch fundamentals     | COMPLETE    | Tensors, autograd, forward pass, MSE loss, backward pass, training loop all covered and practised in code. Matplotlib plots added. Optimizer (SGD/Adam) not formally covered — will introduce naturally in Phase 3 when nn.Module is used. |
-| Phase 3 — First neural network     | IN PROGRESS | Neuron (weights + bias + activation), nn.Module, nn.Linear, Adam, two-layer network built and trained. Next: multiple input features and what hidden layers learn. |
+| Phase 3 — First neural network     | IN PROGRESS | Neuron (weights + bias + activation), nn.Module, nn.Linear, Adam, two-layer network built and trained. Next: multiple input features and what hidden layers learn.                                                                         |
 | Phase 4 — Transformer architecture | NOT STARTED |                                                                                                                                                                                                                                            |
 | Phase 5 — Dataset + pipeline       | NOT STARTED |                                                                                                                                                                                                                                            |
 | Phase 6 — Train the model          | NOT STARTED |                                                                                                                                                                                                                                            |
