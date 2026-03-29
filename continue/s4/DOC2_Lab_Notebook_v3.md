@@ -1,6 +1,6 @@
 # DOC 2 — Lab Notebook
 
-**v2 · Experiments, code, and architecture decisions**
+**v3 · Experiments, code, and architecture decisions**
 
 _This is the technical record of everything built. Claude updates it after every Build, Experiment, or Debug session. It tells future-Claude exactly what exists, where it lives, and what has been tried._
 
@@ -18,6 +18,7 @@ _This is the technical record of everything built. Claude updates it after every
 | Python version      | 3.11.9 (inside venv)         |
 | PyTorch version     | 2.5.1+cu121                  |
 | CUDA Version        | 12.1                         |
+| Matplotlib version  | installed Session 5          |
 | Project folder      | C:\projects\myLLM            |
 | Virtual environment | C:\projects\myLLM\venv       |
 
@@ -31,7 +32,7 @@ C:\projects\myLLM\venv\Scripts\activate
 
 ## 2. Folder structure
 
-Claude updates this whenever a new file or folder is created. Mark new additions with [NEW].
+Claude updates this whenever a new file or folder is created.
 
 ```
 myLLM/
@@ -42,7 +43,8 @@ myLLM/
     transformer.py      ← the model itself (not created yet)
   runs/                 ← training logs and checkpoints
   venv/                 ← Python virtual environment (do not edit manually)
-  train.py              ← training loop (not created yet)
+  forward_pass.py       ← training loop with Matplotlib plot (created Session 5)
+  train.py              ← training loop (not created yet — forward_pass.py is the learning version)
   eval.py               ← evaluation / inference (not created yet)
 ```
 
@@ -146,4 +148,4 @@ _Every paper, video, blog post, or book the human has been pointed to or has rea
 
 ---
 
-_End of Document 2 — Lab Notebook — v2_
+_End of Document 2 — Lab Notebook — v3_
