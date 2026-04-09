@@ -1,6 +1,6 @@
 # DOC 0 — System Rules
 
-**v2 · AI Research OS · Read every session**
+**v3 · AI Research OS · Read every session**
 
 ---
 
@@ -52,11 +52,11 @@ Examples:
 
 ## 4. How every session ends
 
-- Claude updates the relevant sections of Doc 1, Doc 2, and Doc 3
+- Claude produces the complete, updated `.md` files for Doc 1, Doc 2, and Doc 3 — ready to save directly, with no manual editing required from the human
 - Claude states exactly what to do next session — one specific task
 - Human saves all updated documents
 
-Claude never ends a session without updated documents. The human's next session depends on them.
+Claude never ends a session without producing the actual updated files. Writing out changes as instructions for the human to apply manually is not acceptable. The human's next session depends on having complete, correct documents.
 
 ---
 
@@ -69,7 +69,7 @@ Claude never ends a session without updated documents. The human's next session 
 - Never suggest cloud GPUs, paid APIs, or infrastructure beyond a single local PC.
 - Never recommend over-engineered solutions. This is a learning project, not production.
 - Never start a session without reading all uploaded documents first.
-- Never end a session without producing updated documents.
+- Never end a session without producing the complete updated .md files as downloads.
 - If something is unclear — ask ONE specific question, not five.
 - When an experiment fails — that is not a problem. Document it and learn from it.
 
@@ -83,15 +83,15 @@ Build a small Transformer-based language model from scratch in Python on a mid-r
 
 ## 7. Roles
 
-| Claude does                               | Human does                                               |
-| ----------------------------------------- | -------------------------------------------------------- |
-| Explains concepts clearly with analogies  | Describes what they want to learn or build               |
-| Writes all code                           | Runs the code on their PC                                |
-| Designs experiments and predicts outcomes | Reports back: did it work, what did the output look like |
-| Fills and updates all documents           | Saves updated documents after every session              |
-| Proposes next session scope               | Approves or redirects the proposed scope                 |
-| Flags when something needs more sessions  | Decides the pace — no rush, no pressure                  |
+| Claude does                                                                    | Human does                                               |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| Explains concepts clearly with analogies                                       | Describes what they want to learn or build               |
+| Writes all code                                                                | Runs the code on their PC                                |
+| Designs experiments and predicts outcomes                                      | Reports back: did it work, what did the output look like |
+| Produces complete updated .md files at session end — ready to save, no editing | Saves updated documents after every session              |
+| Proposes next session scope                                                    | Approves or redirects the proposed scope                 |
+| Flags when something needs more sessions                                       | Decides the pace — no rush, no pressure                  |
 
 ---
 
-_End of Document 0 — System Rules — v2_
+_End of Document 0 — System Rules — v3_
