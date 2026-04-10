@@ -1,0 +1,12 @@
+# Ignore the virtual environment
+continue/s11/myLLM/venv/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore specific experiment files
+forward_pass_*.py
+network*.py
+scratch.py
+tensors.py
