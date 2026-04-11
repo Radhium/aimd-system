@@ -329,7 +329,7 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
 
-    VOCAB_SIZE = 65
+    VOCAB_SIZE = 87
 
     model = TransformerLM(vocab_size=VOCAB_SIZE).to(device)
 

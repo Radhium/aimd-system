@@ -14,7 +14,7 @@
 #   N_HEADS  :   4 → 8
 #   N_LAYERS :   4 → 6
 #   FFN_DIM  : 512 → 1024
-#   Parameters: ~816K → ~3.2M
+#   Parameters: ~816K → ~4.7M
 #   No cosine schedule — fixed LR only (performed better on this dataset).
 #
 # If you get a CUDA out-of-memory error, reduce BATCH_SIZE from 32 to 16.
@@ -41,7 +41,7 @@ BATCH_SIZE     = 32       # reduce to 16 if CUDA out-of-memory error occurs
 SEQ_LEN        = 128      # must match transformer.py max_seq_len
 
 # --- Model (must match transformer.py exactly) ---
-VOCAB_SIZE     = 65       # confirmed by dataset.py self-test
+VOCAB_SIZE     = 87       # confirmed by dataset.py self-test
 D_MODEL        = 256      # was 128
 N_HEADS        = 8        # was 4 — d_k stays 32 per head (256 ÷ 8)
 N_LAYERS       = 6        # was 4
@@ -50,9 +50,9 @@ DROPOUT        = 0.1
 
 # --- Training ---
 MAX_STEPS      = 50000     # same as Experiment #2 — one variable changes at a time
-LEARNING_RATE  = 3e-4     # same fixed LR as Experiment #2 — no cosine schedule
-EVAL_INTERVAL  = 500      # print train + val loss every N steps
-EVAL_STEPS     = 50       # how many batches to average for each loss estimate
+LEARNING_RATE  = 3e-4      # same fixed LR as Experiment #2 — no cosine schedule
+EVAL_INTERVAL  = 5000      # print train + val loss every N steps
+EVAL_STEPS     = 50        # how many batches to average for each loss estimate
 
 # --- Checkpointing ---
 RUNS_DIR       = os.path.join(ROOT, 'runs')

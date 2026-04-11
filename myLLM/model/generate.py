@@ -27,20 +27,20 @@ from model.transformer import TransformerLM
 # GENERATION SETTINGS — change these to experiment
 # =============================================================================
 
-SEED           = "ROMEO"   # The text the model continues from
+SEED           = "What can you do?"   # The text the model continues from
 MAX_NEW_TOKENS = 500       # How many characters to generate after the seed
-TEMPERATURE    = 0.8       # Lower = more focused, higher = more creative (try 0.6–1.2)
+TEMPERATURE    = 0.7       # Lower = more focused, higher = more creative (try 0.6–1.2)
 
 # =============================================================================
 # MODEL SETTINGS — must match train.py exactly
 # =============================================================================
 
-VOCAB_SIZE  = 65
-D_MODEL     = 128
-N_HEADS     = 4
-N_LAYERS    = 4
+VOCAB_SIZE  = 87
+D_MODEL     = 256
+N_HEADS     = 8
+N_LAYERS    = 6
 SEQ_LEN     = 128
-FFN_DIM     = 512
+FFN_DIM     = 1024
 DROPOUT     = 0.0          # Always 0.0 at inference — we want deterministic behaviour
 
 CHECKPOINT_PATH = os.path.join(ROOT, 'runs', 'best_model.pt')
