@@ -10,6 +10,13 @@ It is made of three things stacked in order:
 
 Every concept in this file was covered during the Learning sessions.
 Read the comments — they explain WHY each line exists, not just what it does.
+
+Change from Experiment #2 (Phase 6):
+  d_model : 128 → 256   (wider vectors — more capacity per token)
+  n_heads :   4 → 8     (more attention heads — d_k stays 32 per head)
+  n_layers:   4 → 6     (deeper — more processing passes)
+  ffn_dim :  512 → 1024 (4 × d_model as always)
+  Parameters: ~816K → ~3.2M
 """
 
 import torch
@@ -23,15 +30,16 @@ import torch.nn.functional as F
 # They are set here as defaults. You can override them when creating the model.
 # ─────────────────────────────────────────────────────────────────────────────
 
-D_MODEL     = 128   # Size of every token's vector throughout the model
-N_HEADS     = 4     # Number of attention heads — must divide evenly into D_MODEL
-N_LAYERS    = 4     # How many Transformer blocks to stack
+D_MODEL     = 256   # Size of every token's vector throughout the model
+N_HEADS     = 8     # Number of attention heads — must divide evenly into D_MODEL
+N_LAYERS    = 6     # How many Transformer blocks to stack
 MAX_SEQ_LEN = 128   # Maximum number of tokens the model can see at once
-FFN_DIM     = 512   # Size of the hidden layer inside the feed-forward network (4 × D_MODEL)
+FFN_DIM     = 1024  # Size of the hidden layer inside the feed-forward network (4 × D_MODEL)
 DROPOUT     = 0.1   # Fraction of activations randomly zeroed during training (regularisation)
 
-# D_K = D_MODEL ÷ N_HEADS = 128 ÷ 4 = 32
+# D_K = D_MODEL ÷ N_HEADS = 256 ÷ 8 = 32
 # This is the dimension of each attention head's Q, K, and V vectors.
+# Same d_k as before — only the number of heads increased.
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -321,8 +329,7 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
 
-    # Create a model with a small dummy vocab size for testing
-    VOCAB_SIZE = 65  # Will be replaced with real vocab size in Phase 5
+    VOCAB_SIZE = 65
 
     model = TransformerLM(vocab_size=VOCAB_SIZE).to(device)
 

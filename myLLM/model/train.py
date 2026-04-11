@@ -1,6 +1,6 @@
 # =============================================================================
 # train.py
-# Phase 7 — Training loop with cosine learning rate schedule
+# Phase 7 — Experiment #4: scaled-up model, fixed learning rate
 #
 # This file ties everything together:
 #   - Loads and tokenises the dataset  (dataset.py)
@@ -9,10 +9,15 @@
 #   - Prints train + val loss every EVAL_INTERVAL steps
 #   - Saves a checkpoint whenever validation loss improves
 #
-# Change from Phase 6: cosine LR schedule added.
-#   The learning rate starts at LEARNING_RATE and smoothly decays to
-#   LEARNING_RATE * 1e-4 by the final step, following a cosine curve.
-#   Everything else is identical to Experiment #2.
+# Changes from Experiment #2 (the fixed-LR baseline):
+#   D_MODEL  : 128 → 256
+#   N_HEADS  :   4 → 8
+#   N_LAYERS :   4 → 6
+#   FFN_DIM  : 512 → 1024
+#   Parameters: ~816K → ~3.2M
+#   No cosine schedule — fixed LR only (performed better on this dataset).
+#
+# If you get a CUDA out-of-memory error, reduce BATCH_SIZE from 32 to 16.
 #
 # Run with the VS Code play button (venv must be active).
 # =============================================================================
@@ -21,7 +26,6 @@ import os
 import sys
 import torch
 
-# Make sure Python can find our modules regardless of where the file lives
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
@@ -33,20 +37,20 @@ from model.transformer  import TransformerLM
 # =============================================================================
 
 # --- Data ---
-BATCH_SIZE     = 32       # how many sequences to process in parallel each step
+BATCH_SIZE     = 32       # reduce to 16 if CUDA out-of-memory error occurs
 SEQ_LEN        = 128      # must match transformer.py max_seq_len
 
 # --- Model (must match transformer.py exactly) ---
 VOCAB_SIZE     = 65       # confirmed by dataset.py self-test
-D_MODEL        = 128
-N_HEADS        = 4
-N_LAYERS       = 4
-FFN_DIM        = 512
+D_MODEL        = 256      # was 128
+N_HEADS        = 8        # was 4 — d_k stays 32 per head (256 ÷ 8)
+N_LAYERS       = 6        # was 4
+FFN_DIM        = 1024     # was 512 — always 4 × D_MODEL
 DROPOUT        = 0.1
 
 # --- Training ---
-MAX_STEPS      = 50000     # total number of training steps
-LEARNING_RATE  = 3e-4     # peak learning rate — cosine schedule decays from here
+MAX_STEPS      = 50000     # same as Experiment #2 — one variable changes at a time
+LEARNING_RATE  = 3e-4     # same fixed LR as Experiment #2 — no cosine schedule
 EVAL_INTERVAL  = 500      # print train + val loss every N steps
 EVAL_STEPS     = 50       # how many batches to average for each loss estimate
 
@@ -61,7 +65,6 @@ CHECKPOINT_PATH = os.path.join(RUNS_DIR, 'best_model.pt')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"[train] Device        : {device}")
 
-# Download dataset if needed, build tokeniser, encode and split
 download_data()
 
 DATA_PATH = os.path.join(ROOT, 'data', 'input.txt')
@@ -97,69 +100,38 @@ print(f"[train] Parameters    : {total_params:,}")
 # OPTIMIZER
 # =============================================================================
 
-# Adam with a standard learning rate for small Transformers.
-# model.parameters() hands Adam every learnable number in the model.
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
-
-# --- CHANGE: cosine learning rate schedule ---
-# CosineAnnealingLR smoothly reduces the learning rate from LEARNING_RATE
-# down to eta_min over T_max steps, following the shape of a cosine curve.
-#
-#   T_max   = MAX_STEPS  — the schedule runs for the full training duration
-#   eta_min = 1e-5       — the floor: LR never drops below this value
-#             (set to ~3% of the peak — we want small steps at the end,
-#              not zero steps, so training doesn't stall completely)
-#
-# After every optimizer.step(), we call scheduler.step() to advance the curve.
-scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-    optimizer,
-    T_max   = MAX_STEPS,
-    eta_min = 1e-5,
-)
-
-# Loss function: cross-entropy between logits and target token IDs.
 criterion = torch.nn.CrossEntropyLoss()
 
 # =============================================================================
 # EVALUATION FUNCTION
 # =============================================================================
 
-@torch.no_grad()                 # no gradient tracking — we are not learning here
+@torch.no_grad()
 def estimate_loss():
     """
     Average loss over EVAL_STEPS random batches from train and val sets.
-
     Returns a dict: {'train': float, 'val': float}
-
-    Why average over multiple batches?
-    A single batch is noisy — it might be unusually easy or hard by chance.
-    Averaging over 50 batches gives a much more reliable estimate.
     """
     losses = {}
 
     for split_name, split_data in [('train', train_data), ('val', val_data)]:
-        model.eval()             # dropout OFF — deterministic behaviour
+        model.eval()
         split_losses = []
 
         for _ in range(EVAL_STEPS):
             x, y = get_batch(split_data, BATCH_SIZE, SEQ_LEN, device)
-
-            # Forward pass — logits shape: (batch_size, seq_len, vocab_size)
             logits = model(x)
 
-            # CrossEntropyLoss expects:
-            #   input  : (N, C) where N = total predictions, C = vocab_size
-            #   target : (N,)   where N = total predictions
-            # So we flatten batch and sequence dimensions together
             B, T, C = logits.shape
-            logits_flat = logits.view(B * T, C)   # (batch*seq, vocab_size)
-            targets_flat = y.view(B * T)           # (batch*seq,)
+            logits_flat  = logits.view(B * T, C)
+            targets_flat = y.view(B * T)
 
             loss = criterion(logits_flat, targets_flat)
             split_losses.append(loss.item())
 
         losses[split_name] = sum(split_losses) / len(split_losses)
-        model.train()            # dropout back ON after evaluation
+        model.train()
 
     return losses
 
@@ -169,27 +141,20 @@ def estimate_loss():
 
 os.makedirs(RUNS_DIR, exist_ok=True)
 
-best_val_loss = float('inf')    # track the best validation loss seen so far
+best_val_loss = float('inf')
 
 print(f"\n[train] Starting training — {MAX_STEPS} steps")
-print(f"[train] Eval every {EVAL_INTERVAL} steps")
-print(f"[train] LR schedule   : cosine {LEARNING_RATE} → 1e-5\n")
+print(f"[train] Eval every {EVAL_INTERVAL} steps\n")
 
-model.train()                   # dropout ON — start in training mode
+model.train()
 
 for step in range(MAX_STEPS):
 
-    # --- Evaluate and print at regular intervals ---
     if step % EVAL_INTERVAL == 0:
-        losses = estimate_loss()
+        losses     = estimate_loss()
         train_loss = losses['train']
         val_loss   = losses['val']
 
-        # Show current learning rate alongside loss — useful to confirm the
-        # schedule is actually moving
-        current_lr = scheduler.get_last_lr()[0]
-
-        # Save a checkpoint if this is the best validation loss we have seen
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             torch.save(model.state_dict(), CHECKPOINT_PATH)
@@ -200,40 +165,26 @@ for step in range(MAX_STEPS):
         print(
             f"step {step:>5} / {MAX_STEPS} | "
             f"train loss: {train_loss:.4f} | "
-            f"val loss: {val_loss:.4f} | "
-            f"lr: {current_lr:.2e}"
+            f"val loss: {val_loss:.4f}"
             f"{saved_marker}"
         )
 
     # --- Training step ---
-
-    # 1. Get a fresh batch
     x, y = get_batch(train_data, BATCH_SIZE, SEQ_LEN, device)
 
-    # 2. Forward pass
-    logits = model(x)                          # (batch_size, seq_len, vocab_size)
+    logits = model(x)
 
-    # 3. Compute loss — flatten as above
     B, T, C      = logits.shape
     logits_flat  = logits.view(B * T, C)
     targets_flat = y.view(B * T)
     loss         = criterion(logits_flat, targets_flat)
 
-    # 4. Backward pass — compute gradients
-    optimizer.zero_grad()                      # clear gradients from previous step
-    loss.backward()                            # compute new gradients
-
-    # 5. Gradient clipping — prevents very large gradient updates destabilising training
+    optimizer.zero_grad()
+    loss.backward()
     torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-
-    # 6. Update weights
     optimizer.step()
 
-    # --- CHANGE: advance the LR schedule by one step ---
-    # Must be called after optimizer.step(), never before.
-    scheduler.step()
-
-# --- Final evaluation after training completes ---
+# --- Final evaluation ---
 losses = estimate_loss()
 print(
     f"\n[train] Training complete."
