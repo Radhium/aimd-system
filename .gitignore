@@ -1,6 +1,6 @@
 # Ignore the virtual environment
-continue/s11/myLLM/venv/
-
+myLLM/venv/
+myLLM/.vscode/
 # Ignore Python cache
 __pycache__/
 *.pyc

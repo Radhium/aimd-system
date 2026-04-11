@@ -1,6 +1,6 @@
 # =============================================================================
 # train.py
-# Phase 6 — Training loop
+# Phase 7 — Training loop with cosine learning rate schedule
 #
 # This file ties everything together:
 #   - Loads and tokenises the dataset  (dataset.py)
@@ -9,8 +9,12 @@
 #   - Prints train + val loss every EVAL_INTERVAL steps
 #   - Saves a checkpoint whenever validation loss improves
 #
+# Change from Phase 6: cosine LR schedule added.
+#   The learning rate starts at LEARNING_RATE and smoothly decays to
+#   LEARNING_RATE * 1e-4 by the final step, following a cosine curve.
+#   Everything else is identical to Experiment #2.
+#
 # Run with the VS Code play button (venv must be active).
-# Expected output: loss starting around 4.1, falling steadily over time.
 # =============================================================================
 
 import os
@@ -42,7 +46,7 @@ DROPOUT        = 0.1
 
 # --- Training ---
 MAX_STEPS      = 50000     # total number of training steps
-LEARNING_RATE  = 3e-4     # standard starting point for Adam on small Transformers
+LEARNING_RATE  = 3e-4     # peak learning rate — cosine schedule decays from here
 EVAL_INTERVAL  = 500      # print train + val loss every N steps
 EVAL_STEPS     = 50       # how many batches to average for each loss estimate
 
@@ -60,7 +64,6 @@ print(f"[train] Device        : {device}")
 # Download dataset if needed, build tokeniser, encode and split
 download_data()
 
-import os as _os
 DATA_PATH = os.path.join(ROOT, 'data', 'input.txt')
 with open(DATA_PATH, 'r', encoding='utf-8') as f:
     raw_text = f.read()
@@ -98,8 +101,23 @@ print(f"[train] Parameters    : {total_params:,}")
 # model.parameters() hands Adam every learnable number in the model.
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
+# --- CHANGE: cosine learning rate schedule ---
+# CosineAnnealingLR smoothly reduces the learning rate from LEARNING_RATE
+# down to eta_min over T_max steps, following the shape of a cosine curve.
+#
+#   T_max   = MAX_STEPS  — the schedule runs for the full training duration
+#   eta_min = 1e-5       — the floor: LR never drops below this value
+#             (set to ~3% of the peak — we want small steps at the end,
+#              not zero steps, so training doesn't stall completely)
+#
+# After every optimizer.step(), we call scheduler.step() to advance the curve.
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+    optimizer,
+    T_max   = MAX_STEPS,
+    eta_min = 1e-5,
+)
+
 # Loss function: cross-entropy between logits and target token IDs.
-# We set ignore_index=-1 as a safety net (not used here but good practice).
 criterion = torch.nn.CrossEntropyLoss()
 
 # =============================================================================
@@ -154,7 +172,8 @@ os.makedirs(RUNS_DIR, exist_ok=True)
 best_val_loss = float('inf')    # track the best validation loss seen so far
 
 print(f"\n[train] Starting training — {MAX_STEPS} steps")
-print(f"[train] Eval every {EVAL_INTERVAL} steps\n")
+print(f"[train] Eval every {EVAL_INTERVAL} steps")
+print(f"[train] LR schedule   : cosine {LEARNING_RATE} → 1e-5\n")
 
 model.train()                   # dropout ON — start in training mode
 
@@ -165,6 +184,10 @@ for step in range(MAX_STEPS):
         losses = estimate_loss()
         train_loss = losses['train']
         val_loss   = losses['val']
+
+        # Show current learning rate alongside loss — useful to confirm the
+        # schedule is actually moving
+        current_lr = scheduler.get_last_lr()[0]
 
         # Save a checkpoint if this is the best validation loss we have seen
         if val_loss < best_val_loss:
@@ -177,7 +200,8 @@ for step in range(MAX_STEPS):
         print(
             f"step {step:>5} / {MAX_STEPS} | "
             f"train loss: {train_loss:.4f} | "
-            f"val loss: {val_loss:.4f}"
+            f"val loss: {val_loss:.4f} | "
+            f"lr: {current_lr:.2e}"
             f"{saved_marker}"
         )
 
@@ -200,12 +224,14 @@ for step in range(MAX_STEPS):
     loss.backward()                            # compute new gradients
 
     # 5. Gradient clipping — prevents very large gradient updates destabilising training
-    #    Clips all gradients so their total norm does not exceed 1.0
-    #    Standard practice for Transformer training
     torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
 
     # 6. Update weights
     optimizer.step()
+
+    # --- CHANGE: advance the LR schedule by one step ---
+    # Must be called after optimizer.step(), never before.
+    scheduler.step()
 
 # --- Final evaluation after training completes ---
 losses = estimate_loss()
