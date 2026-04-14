@@ -7,6 +7,8 @@ After Session 9, you know that every token enters the Transformer as a vector of
 
 The Transformer now has to do something with that matrix. It has to let tokens talk to each other.
 
+---
+
 **That is what self-attention does.**
 The problem self-attention solves
 
@@ -119,6 +121,8 @@ The attention scores matrix is the interesting one. It is (seq_len, seq_len) —
 
 Self-attention is position-agnostic by default. It doesn't know token 1 comes before token 2. It just sees vectors. That is exactly why positional encoding (Session 9) is needed — you bake the position information into the vectors before they enter attention.
 
+---
+
 **Warm-up check**
 
 Before moving on, I want to make sure this has landed. Don't look back up — just reason through it.
@@ -135,6 +139,8 @@ Both correct.
 And you went one level deeper than I asked — you didn't just say "6 rows, one per token." You said Query vectors. That is the right way to think about it. Each row is one token asking its question against every other token's Key.
 
 Let's go one step further into the Transformer before we close the session.
+
+---
 
 **Multi-head attention**
 
@@ -180,6 +186,8 @@ In GPT-style models, dk is set to d_model​÷h.
 So if d_model = 64 and you have 8 heads, each head works in a space of dimension 8. The total computation stays the same size — you are splitting the model dimension across heads, not adding to it.
 
 This is why the rule from Doc 2 says: number of attention heads must divide evenly into d_model.
+
+---
 
 **Second warm-up**
 

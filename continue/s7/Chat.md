@@ -91,6 +91,8 @@ Network's probability for class A| Loss = -log(p)
 
 The pattern: the more confident the network is in the wrong direction, the more it gets punished. The curve is not linear — being 1% on the right answer hurts far more than twice as much as being 10%. That sharp punishment is what makes classification training work.
 
+---
+
 **How Softmax and cross-entropy connect**
 
 In PyTorch, these two are almost always used together, and PyTorch provides a single function that combines them efficiently:
@@ -122,9 +124,10 @@ The task: Given two numbers, classify which of three categories they belong to. 
 
 Create a new file called network3.py in C:\projects\myLLM\ and paste this in:
 
-python# network3.py
+```python
+# network3.py
 
-```
+'''
 # Phase 3 — Classification with Softmax + Cross-Entropy Loss
 
 #
@@ -144,7 +147,7 @@ python# network3.py
 # - torch.argmax : picks the index of the highest value — the predicted class
 
 # - Accuracy : how often the predicted class matches the true class
-
+'''
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
@@ -275,7 +278,7 @@ Run it and tell me:
 2. What do the predicted and true label lists look like — do they match?
 3. What does the loss curve look like — same fast-drop-then-tail shape as before, or different?
 
-```
+```Bash
 user@Shree-Ji-PC MINGW64 /c/projects/myLLM
 $ c:/projects/myLLM/venv/Scripts/python.exe c:/projects/myLLM/network3.py
 Epoch 0 | Loss: 1.0877
@@ -306,11 +309,12 @@ The shape is the same though: steep early drop, then a long slow tail as the net
 Your two decisions
 
 `Decision 1 — No more Matplotlib.` Noted and logged. From now on, code will print loss at intervals but won't generate plots. Faster to run, less distraction.
+
 `Decision 2 — Run on GPU from now on.` Good timing. The networks so far were too small to benefit, but you've now seen all the concepts. Let's add GPU support properly.
 Here is what changes — it's exactly four lines, always the same pattern:
 
-```
-pythondevice = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+```python
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 inputs = inputs.to(device)
 labels = labels.to(device)

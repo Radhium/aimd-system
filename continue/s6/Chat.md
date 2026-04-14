@@ -56,9 +56,9 @@ What does `nn.Linear` look like with multiple inputs?
 
 In code, nothing changes except two numbers:
 
-````
-pythonnn.Linear(in_features=3, out_features=8)
-```
+```python
+nn.Linear(in_features=3, out_features=8)
+'''
 This means: "each neuron receives 3 inputs. There are 8 neurons."
 
 PyTorch automatically creates a **weight matrix** of shape `[8, 3]` — 8 neurons, each with 3 weights. Plus 8 biases, one per neuron.
@@ -74,10 +74,11 @@ You already read weight matrices last session. `[8, 1]` was 8 neurons with 1 wei
 This is the important question.
 
 When you have:
-```
+
 
 Input → Hidden layer → Output layer
-````
+'''
+```
 
 The `hidden layer` is not trying to produce the final answer. It is trying to produce `useful intermediate representations` — features that make the output layer's job easier.
 
@@ -150,8 +151,8 @@ Output: 1 number (predicted y)
 
 Create a new file called network2.py in C:\projects\myLLM\. Copy this in:
 
-```
-pythonimport torch
+```python
+import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 
@@ -268,7 +269,7 @@ Run it. Then report back:
 3. What did it predict for the test input x1=1.0, x2=1.0?
 4. Paste the hidden layer weight printout — just the numbers, doesn't need to be tidy.
 
-```
+```Bash
 Total parameters: 33
 Epoch 0 | Loss: 7.105975
 Epoch 100 | Loss: 0.118081
@@ -533,7 +534,7 @@ x₂ = 1.0         (shape [8, 2])           (shape [1, 8])         5.0039
 Inputs come from outside. Weights are what training finds.
 Does that separate the three things cleanly now?
 
-```
+```Bash
 okay I get it now, but now the thing is I did the same test with 20000 epoch
 Epoch 19500 | Loss: 0.000000
 Epoch 19600 | Loss: 0.000000
@@ -577,9 +578,9 @@ Good instinct to test this. You just discovered empirically why blindly throwing
 
 ---
 
-Why is this running on CPU and not GPU?
+**Why is this running on CPU and not GPU?**
 
-Because we never told PyTorch to use the GPU. In the code, X and the model were created without .to("cuda"). PyTorch always defaults to CPU unless you explicitly move things over.
+Because we never told PyTorch to use the GPU. In the code, X and the model were created without `.to("cuda")`. PyTorch always defaults to CPU unless you explicitly move things over.
 
 You're right that we set up CUDA exactly for this reason. The network is too small to feel the difference — 33 parameters trains in milliseconds regardless. But when we get to the real Transformer with millions of parameters, GPU will matter enormously.
 

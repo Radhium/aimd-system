@@ -125,7 +125,7 @@ When you build a network by inheriting from nn.Module:
 
 You define two things inside an nn.Module:
 
-1. **init** — where you declare the layers (you already know what **init** does from Phase 1)
+1. `__init__` — where you declare the layers (you already know what `__init__` does from Phase 1)
 2. forward — where you describe how data flows through those layers`
    PyTorch calls your forward method automatically when you pass data into the model.
 
@@ -363,7 +363,8 @@ Report back two things:
 
 Don't interpret anything yet — just paste what you see and we'll read it together.
 
-```user@Shree-Ji-PC MINGW64 ~/Desktop/aimd system (main)
+```
+user@Shree-Ji-PC MINGW64 ~/Desktop/aimd system (main)
 $ c:/python314/python.exe "c:/Users/user/Desktop/aimd system/continue/s5/network.py"
 Parameters inside the model:
 layer1.weight: shape torch.Size([8, 1])

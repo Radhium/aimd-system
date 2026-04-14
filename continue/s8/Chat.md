@@ -44,6 +44,8 @@ e → 4
 
 Now the word `bad` becomes `[1, 0, 3]`. This is called `tokenisation` — converting text into a list of integer IDs. You'll build the real tokeniser in Phase 5. For now, just know it exists and gives you a list of integers.
 
+---
+
 **Step 2 — The problem with raw integers**
 
 You might think: great, a=0, b=1, c=2 — just feed those integers into the network directly.
@@ -53,6 +55,8 @@ The problem: integers carry accidental meaning.
 If a=0 and e=4, the network might conclude that e is "four times more" than a, or that c sits exactly halfway between them. That is nonsense. These letters have no numeric relationship. The numbers are just ID tags — like locker numbers at school. Locker 50 is not "more" than Locker 1. They just happen to be labelled that way.
 
 So we cannot feed raw integers into the network.
+
+---
 
 **Step 3 — The embedding table**
 
@@ -97,6 +101,8 @@ In PyTorch, the embedding table is one line:
 You pass in an integer token ID. You get back a vector. That's the whole operation.
 
 In a real model with 50,000 tokens and an embedding dimension of 512, this table has 50,000 × 512 = `25.6 million parameters`. Embeddings are often one of the largest parts of the entire model.
+
+---
 
 **Warm-up check**
 
@@ -143,9 +149,13 @@ its a little non-sense, just somehow makes sense
 That reaction is completely normal — and worth sitting with for a moment before we move on.
 
 Here is why it feels like nonsense: every other sequence processing system you can imagine — reading, listening, typing — is fundamentally left to right. Order feels like it should be automatic.
+
 But the Transformer was designed around one core operation: attention — which you haven't seen yet, but will shortly. Attention works by comparing every token to every other token simultaneously. It doesn't step through the sequence one position at a time. It sees the whole thing at once, like looking at a photograph rather than reading a book.
+
 That design is what makes Transformers so fast and powerful. But it comes with a cost: the mechanism itself is order-blind. If you shuffle the tokens, the attention calculation produces the same result — just with shuffled rows.
+
 So the engineers faced a choice: either redesign attention to be sequential (slow), or inject position information separately and keep attention fast. They chose the second option. That injection is positional encoding.
+
 Think of it like this: imagine you receive a stack of index cards, each with a word on it, but no numbers on the back. You cannot tell which card came first. Positional encoding is the act of writing a number on the back of each card before handing the stack to the Transformer.
 
 ---
@@ -200,7 +210,9 @@ No parameters to learn. Works for any sequence length. But less flexible.
 Your model will use `learned positional embeddings` — Option 1. Same reason we chose character-level tokenisation: simpler to implement, easier to understand, and used by the GPT family which is your reference architecture.
 In PyTorch, it is literally the same line as your token embedding:
 
-`pythonnn.Embedding(max_sequence_length, embedding_dim)`
+```python
+nn.Embedding(max_sequence_length, embedding_dim)
+```
 
 Instead of passing a token ID, you pass a position index — `0, 1, 2, 3... `— and get back a vector for that position.
 
@@ -248,14 +260,19 @@ You worked out unprompted that you slice the first 10 rows from the full 128-row
 
 Your explanation of why element-wise addition requires identical shapes is also exactly right — and that reasoning will keep coming back. Whenever two things are combined in a Transformer, shapes must be compatible. You now have the instinct to check that automatically.
 
+---
+
 **Where we are**
 
 You have covered two concepts today:
 
 `Embeddings` — a learned lookup table that turns token IDs into vectors. Shape out: (sequence_length, embedding_dim)
+
 `Positional encoding` — a second learned lookup table that turns position indices into vectors. Added element-wise to the token embeddings. Shape unchanged.
 
 Together these form the complete input to the Transformer. Every concept from here — attention, feed-forward layers, layer normalisation — receives this (sequence_length, embedding_dim) matrix and works on it.
+
+---
 
 **What comes next**
 

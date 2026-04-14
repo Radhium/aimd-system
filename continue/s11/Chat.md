@@ -361,13 +361,13 @@ Good. Let me think through exactly what train.py needs to do before writing a li
 
 What train.py is responsible for:
 
-    Set all hyperparameters in one place
-    Download data and build tokeniser (call dataset.py)
-    Build the model with the real vocab_size=65 (call transformer.py)
-    Define the optimizer
-    Run the training loop — for each step: get batch → forward pass → loss → backward → update weights
-    Every N steps: evaluate on validation data and print both losses
-    Save a checkpoint when validation loss improves
+1. Set all hyperparameters in one place
+2. Download data and build tokeniser (call dataset.py)
+3. Build the model with the real vocab_size=65 (call transformer.py)
+4. Define the optimizer
+5. Run the training loop — for each step: get batch → forward pass → loss → backward → update weights
+6. Every N steps: evaluate on validation data and print both losses
+7. Save a checkpoint when validation loss improves
 
 One thing needs explaining before I write it — evaluation mode.
 
@@ -378,8 +378,7 @@ During training, dropout randomly switches off neurons to prevent the model from
 
 You call these before the relevant section of code. The model switches mode instantly. This is the standard pattern for every training loop you will ever write.
 
-Also — during validation you wrap the code in torch.no_grad(). You already know this from Phase 2: it tells PyTorch not to build a computational graph, because you are not going to call .backward(). Saves memory and runs faster.
-Created a file, read a file
+Also — during validation you wrap the code in `torch.no_grad()`. You already know this from Phase 2: it tells PyTorch not to build a computational graph, because you are not going to call `.backward()`. Saves memory and runs faster.
 
 Save this file to C:\projects\myLLM\train.py.
 
@@ -524,7 +523,7 @@ Save this to C:\projects\myLLM\model\generate.py — same folder as train.py.
 
 Then run it:
 
-python generate.py
+    python generate.py
 
 You should see 500 characters of generated text continuing from "ROMEO". It won't be perfect Shakespeare — the model is small and only trained for 5000 steps — but it should look like plausible Shakespearean structure: line breaks in roughly the right places, character names, some recognisable words.
 
@@ -583,10 +582,10 @@ That silences it permanently.
 
 Phase 5 and 6 are now complete. Here is what exists and works:
 
-`transformer.py` — the full model
-`data/dataset.py` — the data pipeline
-`model/train.py` — the training loop
-`model/generate.py` — text generation from checkpoint
+- `transformer.py` — the full model
+- `data/dataset.py` — the data pipeline
+- `model/train.py` — the training loop
+- `model/generate.py` — text generation from checkpoint
 
 **What comes next — Phase 7**
 
@@ -710,9 +709,3 @@ Doc 2 (v11): Folder structure corrected to reflect where files actually live now
 Doc 3 (v14): Session 13 fully logged. Phase 5 marked COMPLETE. Phase 6 marked COMPLETE. Phase 7 added as NOT STARTED. Project snapshot updated. Oldest session entry (Session 8) rotated out to keep the last 5.
 
 Next session: REVIEW — bring all four docs, and we'll look honestly at the train/val gap, what the model has and hasn't learned, and decide which lever to pull next.
-
-Doc2 lab notebook v11
-Document · MD
-
-Doc3 session log v14
-Document · MD

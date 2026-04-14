@@ -1,6 +1,6 @@
 # DOC 0 — System Rules
 
-**v3 · AI Research OS · Read every session**
+**v2 · AI Research OS · Read every session**
 
 ---
 
@@ -94,4 +94,4 @@ Build a small Transformer-based language model from scratch in Python on a mid-r
 
 ---
 
-_End of Document 0 — System Rules — v3_
+_End of Document 0 — System Rules — v2_

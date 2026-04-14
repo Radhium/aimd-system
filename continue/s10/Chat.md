@@ -1,6 +1,6 @@
 # Session type: BUILD
 
-Project phase: Phase 4 — Transformer architecture
+**Project phase: Phase 4 — Transformer architecture**
 
 What happened last session (Session 10): Full LEARNING session on the Transformer block. You covered self-attention, Q/K/V, multi-head attention, feed-forward layer, GELU, layer normalisation, and residual connections. You can read and explain the full block structure: x = x + Attention(LayerNorm(x)) then x = x + FFN(LayerNorm(x)). You aced all three warm-up shape derivations cleanly.
 
@@ -30,7 +30,7 @@ This will produce a model of roughly `1–2 million parameters` — small enough
 
 Now writing the code. Give me a moment.
 
-```
+```PYTHON
 """
 transformer.py — The full Transformer model (decoder-only, GPT-style)
 
